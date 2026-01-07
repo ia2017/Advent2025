@@ -4,63 +4,43 @@ with open("inputs/Day6") as f:
     for line in f:
         lines.append(line.split("\n")[0])
 
-arrays = []
-
+buffer = 2
 score = 0
-for i, line in enumerate(lines):
-    val = ""
-    sarray = []
-    j = 0
-    for char in line:
-        if char == " " and len(sarray) > 0:
-            # Maths
-            if i == len(lines) - 1:
-                if val == "*":
-                    subscore = 1
-                    for s in arrays:
-                        subscore *= s[j]
-                    score += subscore
-                elif val == "+":
-                    subscore = 0
-                    for s in arrays:
-                        subscore += s[j]
-                    score += subscore
-                else:
-                    print("Warning", val)
-                val = ""
-            else:
-                if i < len(lines) - 1:
-                    arrays.append(sarray)
-                    sarray = []
-            j += 1
-        elif char == " " and len(val) == 0:
-            pass
-        else:
-            if i == 0:
-                sarray.append(val)
-            else:
-                sarray[j] = sarray[j] + char
-    # Last char
-    if len(val) > 0:
-        # Maths
-        if i == len(lines) - 1:
-            if val == "*":
+sline = []
+for i, line in enumerate(lines[:-1]):
+    if i == 0:
+        sline = list(line)
+        sline += ['' for i in range(buffer)]
+    else:
+        for j, char in enumerate(line):
+            sline[j] += char
+
+temp = []
+op_ind = 0
+for s in sline:
+    if len(s.split()) == 0:
+        subscore = 0
+        for i in range(op_ind, len(lines[-1])):
+            if lines[-1][i] == "*":
                 subscore = 1
-                for s in arrays:
-                    subscore *= s[j]
-                score += subscore
-            elif val == "+":
+                for t in temp:
+                    subscore *= t
+                op_ind = i + 1
+                break
+            elif lines[-1][i] == "+":
                 subscore = 0
-                for s in arrays:
-                    subscore += s[j]
-                score += subscore
-            else:
-                print("Warning 2", val)
-            val = ""
-        else:
-            sarray.append(int(val))
-            val = ""
-    if i < len(lines) - 1:
-        arrays.append(sarray)
+                for t in temp:
+                    subscore += t
+                op_ind = i + 1
+                break
+        score += subscore
+        temp = []
+        pass
+    else:
+        temp.append(int(s))
+
+
+
+# print(sline)
 
 print(score)
