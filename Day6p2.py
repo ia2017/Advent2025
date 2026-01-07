@@ -12,7 +12,7 @@ for i, line in enumerate(lines):
     sarray = []
     j = 0
     for char in line:
-        if char == " " and len(val) > 0:
+        if char == " " and len(sarray) > 0:
             # Maths
             if i == len(lines) - 1:
                 if val == "*":
@@ -29,13 +29,17 @@ for i, line in enumerate(lines):
                     print("Warning", val)
                 val = ""
             else:
-                sarray.append(int(val))
-                val = ""
+                if i < len(lines) - 1:
+                    arrays.append(sarray)
+                    sarray = []
             j += 1
         elif char == " " and len(val) == 0:
             pass
         else:
-            val += char
+            if i == 0:
+                sarray.append(val)
+            else:
+                sarray[j] = sarray[j] + char
     # Last char
     if len(val) > 0:
         # Maths

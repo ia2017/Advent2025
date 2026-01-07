@@ -41,12 +41,14 @@ for i in range(1, len(sranges)):
         sranges_new.pop(-1)
         sranges_new.append(tup_in)
         j += 1
-    elif sranges_new[i - j - 1][1] <= sranges[i][0] and sranges_new[i - j - 1][1] >= sranges[i][1]:
+    elif sranges_new[i - j - 1][1] >= sranges[i][0] and sranges_new[i - j - 1][1] >= sranges[i][1]:
+        j += 1
         pass
     else:
         sranges_new.append(sranges[i])
     # print(sranges_new)
 
+# print(sranges)
 print(len(sranges), len(sranges_new))
 score = 0
 for i, sr in enumerate(sranges_new):
